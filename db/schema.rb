@@ -17,13 +17,13 @@ ActiveRecord::Schema.define(version: 20160426024759) do
   enable_extension "plpgsql"
 
   create_table "contacts", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "occupation"
-    t.string   "professional_relationship"
-    t.string   "company"
-    t.date     "last_contacted"
-    t.string   "fact"
+    t.string   "first_name",                null: false
+    t.string   "last_name",                 null: false
+    t.string   "occupation",                null: false
+    t.string   "professional_relationship", null: false
+    t.string   "company",                   null: false
+    t.date     "last_contacted",            null: false
+    t.string   "fact",                      null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "user_id"
