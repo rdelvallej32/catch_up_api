@@ -1,11 +1,10 @@
 # Contacts Controller
-class ContactsController < ApplicationController
+class ContactsController < ProtectedController
   before_action :set_contact, only: [:show, :update, :destroy]
 
   # GET /contacts
-  # GET /contacts.json
   def index
-    @contacts = Contact.all
+    @contacts = current_user.contacts.all
 
     render json: @contacts
   end
@@ -28,8 +27,7 @@ class ContactsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /contacts/1
-  # PATCH/PUT /contacts/1.json
+  # PATCH /contacts/:id
   def update
     @contact = Contact.find(params[:id])
 
@@ -40,8 +38,7 @@ class ContactsController < ApplicationController
     end
   end
 
-  # DELETE /contacts/1
-  # DELETE /contacts/1.json
+  # DELETE /contacts/:id
   def destroy
     @contact.destroy
 
@@ -50,11 +47,13 @@ class ContactsController < ApplicationController
 
   private
 
-    def set_contact
-      @contact = Contact.find(params[:id])
-    end
+  def set_contact
+    @contact = Contact.find(params[:id])
+  end
 
-    def contact_params
-      params.require(:contact).permit(:first_name, :last_name, :occupation, :professional_relationship, :company, :last_contacted, :fact)
-    end
+  def contact_params
+    params.require(:contact).permit(:first_name, :last_name, :occupation,
+                                    :professional_relationship, :company,
+                                    :last_contacted, :fact)
+  end
 end
