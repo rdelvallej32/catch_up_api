@@ -1,3 +1,4 @@
+# Contacts Controller
 class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :update, :destroy]
 
