@@ -16,9 +16,8 @@ class ContactsController < ProtectedController
   end
 
   # POST /contacts
-  # POST /contacts.json
   def create
-    @contact = Contact.new(contact_params)
+    @contact = current_user.contact.new(contact_params)
 
     if @contact.save
       render json: @contact, status: :created, location: @contact
@@ -29,7 +28,7 @@ class ContactsController < ProtectedController
 
   # PATCH /contacts/:id
   def update
-    @contact = Contact.find(params[:id])
+    @contact = current_user.contact.find(params[:id])
 
     if @contact.update(contact_params)
       head :no_content
@@ -48,7 +47,7 @@ class ContactsController < ProtectedController
   private
 
   def set_contact
-    @contact = Contact.find(params[:id])
+    @contact = current_user.contact.find(params[:id])
   end
 
   def contact_params
