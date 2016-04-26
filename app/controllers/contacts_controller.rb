@@ -55,4 +55,6 @@ class ContactsController < ProtectedController
                                     :professional_relationship, :company,
                                     :last_contacted, :fact)
   end
+
+  private :set_contact, :contact_params
 end
