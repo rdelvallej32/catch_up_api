@@ -1,10 +1,10 @@
 # Contacts Controller
-class ContactsController < ProtectedController
-  before_action :set_contact, only: [:show, :update, :destroy]
+class ContactsController < OpenReadController
+  before_action :set_contact, only: [:update, :destroy]
 
   # GET /contacts
   def index
-    @contacts = current_user.contacts.all
+    @contacts = Contact.all
 
     render json: @contacts
   end
@@ -17,7 +17,7 @@ class ContactsController < ProtectedController
 
   # POST /contacts
   def create
-    @contact = current_user.contact.new(contact_params)
+    @contact = current_user.contacts.build(contact_params)
 
     if @contact.save
       render json: @contact, status: :created, location: @contact
@@ -28,7 +28,7 @@ class ContactsController < ProtectedController
 
   # PATCH /contacts/:id
   def update
-    @contact = current_user.contact.find(params[:id])
+    # @contact = current_user.contacts.find(params[:id])
 
     if @contact.update(contact_params)
       head :no_content
@@ -47,7 +47,7 @@ class ContactsController < ProtectedController
   private
 
   def set_contact
-    @contact = current_user.contact.find(params[:id])
+    @contact = current_user.contacts.find(params[:id])
   end
 
   def contact_params

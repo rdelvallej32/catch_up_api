@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'routes for comments' do
+RSpec.describe 'routes for contacts' do
   it 'routes GET /contacts to the contacts#index action' do
     expect(get('/contacts')).to route_to('contacts#index')
   end

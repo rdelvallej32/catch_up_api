@@ -3,79 +3,108 @@ require 'rails_helper'
 RSpec.describe 'Contacts API' do # test for th articles api
   def contact_params
     {
-      content: 'You won\'t believe what happens next...'
+      first_name: 'Henry',
+      last_name: 'Holmes',
+      occupation: 'Professor',
+      professional_relationship: 'Mentor',
+      company: 'BU',
+      last_contacted: '2012_04_07',
+      fact: 'Likes Pizza'
     }
   end
 
-  def comments
-    Comment.all
+  def contacts
+    Contact.all
   end
 
-  def comment
-    Comment.first
+  def contact
+    Contact.first
   end
 
-  before(:all) do # before all the test, run method and then create an article
-    Comment.create!(comment_params)
+  def user_params
+    {
+      email: 'alice@example.com',
+      password: 'foobarbaz',
+      password_confirmation: 'foobarbaz'
+    }
+  end
+
+  def user
+    User.first
+  end
+
+  before(:all) do # before all the test, run method and then create a contact
+    User.create!(user_params)
+    Contact.create!(contact_params)
   end
 
   after(:all) do # after the test, run method to delete it
-    Comment.delete_all
+    Contact.delete_all
+    User.delete_all
   end
 
-  describe 'GET /comments' do
-    it 'lists all comments' do
-      get '/comments'
+  describe 'GET /contacts' do
+    it 'lists all contacts' do
+      get '/contacts'
 
       expect(response).to be_success
 
-      comment_response = JSON.parse(response.body)
-      expect(comment_response.length).to eq(comments.count)
-      expect(comment_response.first['content']).to eq(comment['content'])
+      contact_response = JSON.parse(response.body)
+      expect(contact_response.length).to eq(contacts.count)
+      expect(contact_response['contacts'].first['first_name']).to eq(
+        contact.first_name)
     end
   end
 
-  describe 'GET /comments/:id' do
-    it 'shows one comment' do
-      # interpolate the comment method
-      get "/comments/#{comment.id}", comment: comment_params, format: :json
+  describe 'GET /contacts/:id' do
+    it 'shows one contact' do
+      # interpolate the contact method
+      get "/contacts/#{contact.id}", contact: contact_params, format: :json
 
       expect(response).to be_success
-      comment_response = JSON.parse(response.body)
-      expect(comment_response).not_to be_nil
-      expect(comment_response['content']).to eq(comment_params[:content])
+      contact_response = JSON.parse(response.body)
+      expect(contact_response).not_to be_nil
+      expect(contact_response['id']).to eq[contact.id]
+      expect(contact_response['first_name']).to eq(contact_params[:first_name])
     end
   end
 
-  describe 'POST /comments' do
-    it 'creates an comment' do
-      post '/comments', comment: comment_params, format: :json
+  describe 'POST /contacts' do
+    it 'creates an contact' do
+      post '/contacts', contact: contact_params, format: :json
 
       expect(response).to be_success
-      comment_response = JSON.parse(response.body)
-      expect(comment_response).not_to be_nil
-      expect(comment_response['content']).to eq(comment_params[:content])
+      contact_response = JSON.parse(response.body)
+      expect(contact_response).not_to be_nil
+      expect(contact_response['content']).to eq(contact_params[:content])
     end
   end
 
-  describe 'PATCH /comments/:id' do
-    def comment_diff
-      { comment: 'Two Stupid Tricks' }
+  describe 'PATCH /contacts/:id' do
+    def contact_diff
+      { first_name: 'Henry',
+        last_name: 'Holmes',
+        occupation: 'Dean',
+        professional_relationship: 'Mentor',
+        company: 'BC',
+        last_contacted: '2013_05_07',
+        fact: 'Likes Pizza'
+      }
     end
 
-    it 'updates an comment' do
-      patch "/comments/#{comment.id}", comment: comment_diff, format: :json
+    it 'updates an contact' do
+      patch "/contacts/#{contact.id}", contact: contact_diff, format: :json
 
       expect(response).to be_success
-      comment_response = JSON.parse(response.body)
-      expect(comment_response).not_to be_nil
-      expect(comment_response['content']).to eq(comment_params[:content])
+      contact_response = JSON.parse(response.body)
+      expect(contact_response).not_to be_nil
+      expect(contact_response['company']).to eq(contact_params[:company])
     end
   end
 
-  describe 'DELETE /comments/:id' do
-    it 'deletes an comment and response body to be empty' do
-      delete "/comments/#{comment.id}"
+  describe 'DELETE /contacts/:id' do
+    it 'deletes an contact and response body to be empty' do
+      delete "/contacts/#{contact.id}"
 
       expect(response).to be_success
       expect(response.body).to be_empty
