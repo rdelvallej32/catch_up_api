@@ -2,6 +2,7 @@
 class ContactsController < OpenReadController
   before_action :set_contact, only: [:update, :destroy]
 
+  attr_reader :current_user
   # GET /contacts
   def index
     @contacts = Contact.all
@@ -56,5 +57,5 @@ class ContactsController < OpenReadController
                                     :last_contacted, :fact)
   end
 
-  private :set_contact, :contact_params
+  private :set_contact, :contact_params, :current_user
 end

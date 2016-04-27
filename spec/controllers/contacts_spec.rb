@@ -8,7 +8,7 @@ RSpec.describe ContactsController do
       occupation: 'Professor',
       professional_relationship: 'Mentor',
       company: 'BU',
-      last_contacted: '2012_04_07',
+      last_contacted: '20120407',
       fact: 'Likes Pizza'
     }
   end
@@ -39,79 +39,13 @@ RSpec.describe ContactsController do
     User.delete_all
   end
 
-  describe 'GET index' do
-    before(:each) { get :index }
-    it 'is succesful' do
-      expect(response.status).to be_success
-    end
-
-    it 'renders a JSON response' do
-      contact_response = JSON.parse(response.body)
-      expect(contact_response).not_to be_nil
-    end
-  end
-
-  describe 'GET show' do
-    it 'is successful' do
-      get :show, id: contact.id
-
-      expect(response.status).to eq(200)
-    end
-
-    it 'renders a JSON response' do
-      get :show, id: contact.id
-
-      contact_response = JSON.parse(response.body)
-      expect(contact_response).not_to be_nil
-    end
-  end
-
   context 'when authenticated' do
     before(:each) do
       post :signup, { credentials: user_params }, format: :json
       post :signin, { credentials: user_params }, format: :json
-
-      @token = JSON.parse(response.body)['user']['token']
-      request.env['HTTP_AUTHORIZATION'] = "Token token=#{@token}"
-
-      @user_id = JSON.parse(response.body)['user']['id']
     end
-
-    describe 'PATCH changepw' do
-      def new_password_params
-        {
-          old: 'foobarbaz',
-          new: 'foobarbazqux'
-        }
-      end
-
-      before(:each) do
-        patch :changepw,
-              { id: @user_id, passwords: new_password_params },
-              format: :json
-      end
-
-      it 'is successful' do
-        expect(response).to be_successful
-      end
-
-      it 'renders no response body' do
-        expect(response.body).to be_empty
-      end
-    end
-
-    describe 'DELETE signout' do
-      before(:each) do
-        delete :signout, id: @user_id, format: :json
-      end
-
-      it 'is successful' do
-        expect(response).to be_successful
-      end
-
-      it 'renders no response body' do
-        expect(response.body).to be_empty
-      end
+    before(:each) do
+      request.env['HTTP_AUTHORIZATION'] = "Token token=#{user.token}"
     end
 
     describe 'GET index' do
@@ -131,7 +65,7 @@ RSpec.describe ContactsController do
 
     describe 'GET show' do
       before(:each) do
-        get :index, id: @user_id, format: :json
+        get :index, id: contact.id, format: :json
       end
 
       it 'is successful' do
@@ -141,6 +75,59 @@ RSpec.describe ContactsController do
       it 'renders a JSON response' do
         contact_response = JSON.parse(response.body)
         expect(contact_response).not_to be_nil
+      end
+    end
+
+    describe 'POST create' do
+      before(:each) do
+        post :create,
+             { contact: contact_params }, format: :json
+      end
+
+      it 'is successful' do
+        expect(response).to be_successful
+      end
+
+      it 'renders a JSON response' do
+        contact_response = JSON.parse(response.body)
+
+        expect(contact_response).not_to be_nil
+      end
+    end
+
+    describe 'PATCH update' do
+      def new_contact_params
+        { occupation: 'Dean'
+        }
+      end
+
+      before(:each) do
+        patch :update,
+              { id: contact.id, contact: new_contact_params },
+              format: :json
+      end
+
+      it 'is successful' do
+        expect(response).to be_successful
+      end
+
+      it 'renders a JSON response' do
+        contact_response = JSON.parse(response.body)
+        expect(contact_response).not_to be_nil
+      end
+    end
+
+    describe 'DELETE destroy' do
+      before(:each) do
+        delete :destroy, id: contact.id, format: :json
+      end
+
+      it 'is successful' do
+        expect(response).to be_success
+      end
+
+      it 'renders no response body' do
+        expect(response.body).to be_empty
       end
     end
   end

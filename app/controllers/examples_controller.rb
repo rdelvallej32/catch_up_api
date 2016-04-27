@@ -13,7 +13,7 @@ class ExamplesController < OpenReadController
   # GET /examples/1
   # GET /examples/1.json
   def show
-    render json: Example.find(params[:id])
+    render json: @example
   end
 
   # POST /examples
