@@ -1,8 +1,8 @@
 # Contacts Controller
 class ContactsController < ProtectedController
-  before_action :set_contact, only: [:index, :show, :update, :destroy]
+  before_action :set_contact, only: [:show, :update, :destroy]
 
-  # POST /contacts
+  # POST /contacts * working
   def create
     @contact = current_user.contacts.build(contact_params)
 
@@ -15,18 +15,18 @@ class ContactsController < ProtectedController
 
   # GET /contacts
   def index
-    @contacts = current_user.contacts.all
-
+    binding.pry
+    @contacts = current_user.contacts
     render json: @contacts
   end
 
   # GET /contacts/1
-  # GET /contacts/1.json
+  # GET /contacts/1.json * working
   def show
     render json: @contact
   end
 
-  # PATCH /contacts/:id
+  # PATCH /contacts/:id * working
   def update
     # @contact = current_user.contacts.find(params[:id])
 
@@ -37,7 +37,7 @@ class ContactsController < ProtectedController
     end
   end
 
-  # DELETE /contacts/:id
+  # DELETE /contacts/:id * working
   def destroy
     @contact.destroy
 
