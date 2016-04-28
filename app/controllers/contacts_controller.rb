@@ -15,7 +15,7 @@ class ContactsController < ProtectedController
 
   # GET /contacts
   def index
-    @contacts = Contact.all
+    @contacts = current_user.contacts.all
 
     render json: @contacts
   end
