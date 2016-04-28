@@ -40,10 +40,10 @@ RSpec.describe ContactsController do
   end
 
   context 'when authenticated' do
-    before(:each) do
-      post :signup, { credentials: user_params }, format: :json
-      post :signin, { credentials: user_params }, format: :json
-    end
+    # before(:each) do
+    #   post :signup, { credentials: user_params }, format: :json
+    #   post :signin, { credentials: user_params }, format: :json
+    # end
     before(:each) do
       request.env['HTTP_AUTHORIZATION'] = "Token token=#{user.token}"
     end

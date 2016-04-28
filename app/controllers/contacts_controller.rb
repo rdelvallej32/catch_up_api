@@ -1,8 +1,18 @@
 # Contacts Controller
-class ContactsController < OpenReadController
-  before_action :set_contact, only: [:update, :destroy]
+class ContactsController < ProtectedController
+  before_action :set_contact, only: [:index, :show, :update, :destroy]
 
-  attr_reader :current_user
+  # POST /contacts
+  def create
+    @contact = current_user.contacts.build(contact_params)
+
+    if @contact.save
+      render json: @contact, status: :created, location: @contact
+    else
+      render json: @contact.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /contacts
   def index
     @contacts = Contact.all
@@ -16,23 +26,12 @@ class ContactsController < OpenReadController
     render json: @contact
   end
 
-  # POST /contacts
-  def create
-    @contact = current_user.contacts.build(contact_params)
-
-    if @contact.save
-      render json: @contact, status: :created, location: @contact
-    else
-      render json: @contact.errors, status: :unprocessable_entity
-    end
-  end
-
   # PATCH /contacts/:id
   def update
     # @contact = current_user.contacts.find(params[:id])
 
     if @contact.update(contact_params)
-      head :no_content
+      render json: @contact, status: :ok
     else
       render json: @contact.errors, status: :unprocessable_entity
     end

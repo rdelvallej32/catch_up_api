@@ -50,10 +50,19 @@ RSpec.describe 'Contacts API' do # test for th articles api
       }
     end
 
+    before(:each) do
+      post '/sign-up', credentials: user_params
+      post '/sign-in', credentials: user_params
+
+      @token = JSON.parse(response.body)['user']['token']
+      @user_id = JSON.parse(response.body)['user']['id']
+    end
+
     describe 'GET /contacts' do
       it 'lists all contacts' do
         get '/contacts', headers
 
+        p headers
         expect(response).to be_success
 
         contact_response = JSON.parse(response.body)
@@ -71,7 +80,7 @@ RSpec.describe 'Contacts API' do # test for th articles api
 
         expect(response).to be_success
         contact_response = JSON.parse(response.body)
-        expect(contact_response['id']).to eq[contact.id]
+        expect(contact_response['contacts']['id']).to eq[contact.id]
         expect(contact_response['first_name']).to eq(contact.first_name)
       end
     end
@@ -116,6 +125,24 @@ RSpec.describe 'Contacts API' do # test for th articles api
 
         expect(response).to be_success
         expect(response.body).to be_empty
+      end
+    end
+  end
+
+  context 'when not authenticated' do
+    describe 'GET /contacts' do
+      it 'is not successful' do
+        get '/contacts'
+
+        expect(response).not_to be_success
+      end
+    end
+
+    describe 'GET /contacts/:id' do
+      it 'is not successful' do
+        get "/contacts/#{contact.id}"
+
+        expect(response).not_to be_success
       end
     end
   end
