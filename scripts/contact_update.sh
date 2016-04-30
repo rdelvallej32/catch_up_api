@@ -1,6 +1,6 @@
 #!/bin/bash
-TOKEN='BAhJIiViYmFiZGZkZWMzMDM5OTY2OThlYTQ0MDEwMDIyYmMzMQY6BkVG--1acd3c027bdc41e7c86b0f5c3af9d123111b669e'
-ID='1'
+TOKEN='BAhJIiU4YWRjM2YyYjVjMGM1N2Y1Njc1ZDA1YjlkNjViNGM1NgY6BkVG--f17abe6f21e8b559cb381d8f5b831bc557d7641f'
+ID='4'
 
 curl --include --request PATCH http://localhost:3000/contacts/${ID} \
 --header "Authorization: Token token=${TOKEN}" \

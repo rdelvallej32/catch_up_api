@@ -13,9 +13,8 @@ class ContactsController < ProtectedController
     end
   end
 
-  # GET /contacts
+  # GET /contacts * working
   def index
-    binding.pry
     @contacts = current_user.contacts
     render json: @contacts
   end
