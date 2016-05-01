@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20160426024759) do
     t.string   "company",                   null: false
     t.date     "last_contacted",            null: false
     t.string   "fact",                      null: false
+    t.integer  "reminder",                  null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "user_id",                   null: false

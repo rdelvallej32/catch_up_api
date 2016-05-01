@@ -8,6 +8,7 @@ class CreateContacts < ActiveRecord::Migration
       t.string :company, null: false
       t.date :last_contacted, null: false
       t.string :fact, null: false
+      t.integer :reminder, null: false
 
       t.timestamps null: false
     end
