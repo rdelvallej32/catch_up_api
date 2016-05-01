@@ -52,7 +52,7 @@ class ContactsController < ProtectedController
   def contact_params
     params.require(:contact).permit(:first_name, :last_name, :occupation,
                                     :professional_relationship, :company,
-                                    :last_contacted, :fact)
+                                    :last_contacted, :fact, :reminder)
   end
 
   private :set_contact, :contact_params, :current_user
