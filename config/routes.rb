@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :profiles, except: [:new, :edit]
   post '/sign-up' => 'users#signup'
   post '/sign-in' => 'users#signin'
   delete '/sign-out/:id' => 'users#signout'
