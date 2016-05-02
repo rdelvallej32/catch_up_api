@@ -1,13 +1,14 @@
-class ProfilesController < ApplicationController
+class ProfilesController < ProtectedController
+  skip_before_action :authenticate, only: [:create]
   before_action :set_profile, only: [:show, :update, :destroy]
 
   # GET /profiles
   # GET /profiles.json
-  def index
-    @profiles = Profile.all
-
-    render json: @profiles
-  end
+  # def index
+  #   @profiles = Profile.all
+  #
+  #   render json: @profiles
+  # end
 
   # GET /profiles/1
   # GET /profiles/1.json
@@ -18,7 +19,7 @@ class ProfilesController < ApplicationController
   # POST /profiles
   # POST /profiles.json
   def create
-    @profile = Profile.new(profile_params)
+    @profile = current_user.profiles.build(profile_params)
 
     if @profile.save
       render json: @profile, status: :created, location: @profile
@@ -30,7 +31,7 @@ class ProfilesController < ApplicationController
   # PATCH/PUT /profiles/1
   # PATCH/PUT /profiles/1.json
   def update
-    @profile = Profile.find(params[:id])
+    # @profile = Profile.find(params[:id])
 
     if @profile.update(profile_params)
       head :no_content
@@ -50,7 +51,7 @@ class ProfilesController < ApplicationController
   private
 
     def set_profile
-      @profile = Profile.find(params[:id])
+      @profile = current_user.profiles.find(params[:id])
     end
 
     def profile_params
