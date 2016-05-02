@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
 
     message = @client.messages.create(
       from: @twilio_number,
-      to: '+16178695131',
+      to: '',
       body: 'Learning to send SMS you are.',
       media_url: 'http://linode.rabasa.com/yoda.gif'
           )
