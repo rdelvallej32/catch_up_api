@@ -1,6 +1,6 @@
-class ProfilesController < ProtectedController
-  skip_before_action :authenticate, only: [:create]
-  before_action :set_profile, only: [:show, :update, :destroy]
+#
+class ProfilesController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   # GET /profiles
   # GET /profiles.json
@@ -9,6 +9,19 @@ class ProfilesController < ProtectedController
   #
   #   render json: @profiles
   # end
+
+  def notify
+    @twilio_number = ENV['TWILIO_NUMBER']
+    @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'],
+                                       ENV['TWILIO_AUTH_TOKEN']
+
+    message = @client.messages.create(
+      from: @twilio_number,
+      to: '+16178695131',
+      body: 'Hey Phil, I am a robot'
+          )
+    render plain: message.status
+  end
 
   # GET /profiles/1
   # GET /profiles/1.json
@@ -50,11 +63,11 @@ class ProfilesController < ProtectedController
 
   private
 
-    def set_profile
-      @profile = current_user.profiles.find(params[:id])
-    end
+  def set_profile
+    @profile = current_user.profiles.find(params[:id])
+  end
 
-    def profile_params
-      params.require(:profile).permit(:username, :phone_number)
-    end
+  def profile_params
+    params.require(:profile).permit(:username, :phone_number)
+  end
 end
