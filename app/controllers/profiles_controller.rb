@@ -1,7 +1,5 @@
 #
 class ProfilesController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   # GET /profiles
   # GET /profiles.json
   # def index
@@ -9,20 +7,6 @@ class ProfilesController < ApplicationController
   #
   #   render json: @profiles
   # end
-
-  def notify
-    @twilio_number = ENV['TWILIO_NUMBER']
-    @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'],
-                                       ENV['TWILIO_AUTH_TOKEN']
-
-    message = @client.messages.create(
-      from: @twilio_number,
-      to: '',
-      body: 'Learning to send SMS you are.',
-      media_url: 'http://linode.rabasa.com/yoda.gif'
-          )
-    render plain: message.status
-  end
 
   # GET /profiles/1
   # GET /profiles/1.json
