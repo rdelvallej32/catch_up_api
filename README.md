@@ -3,10 +3,12 @@
 An API to store contacts in a list to manage the last time each contact was
 contacted.
 
-# A Tic-tac-toe data store API
+# A Contact Storage API
 
 Link to front end: https://github.com/rdelvallej32/catch_up_frontend/tree/master
+
 Link to back end: https://github.com/rdelvallej32/catch_up_api
+
 Link to wireframes: https://app.moqups.com/rdelvallej@gmail.com/jOKx4Yfb/edit/page/a4f24c2e8
 
 ##### Technologies used (back end):
