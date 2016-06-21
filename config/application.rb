@@ -45,7 +45,7 @@ module CatchUp
         resource '*',
                  headers: :any,
                  methods: [:options, :get,
-                           :post, :patch, :delete]
+                           :post, :put, :patch, :delete]
       end
     end
   end
